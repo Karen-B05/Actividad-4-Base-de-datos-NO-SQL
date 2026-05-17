@@ -1,5 +1,15 @@
 {
+  "name": "moviestream-db",
+  "version": "1.0.0",
+  "description": "MovieStream NoSQL — Express + MongoDB Atlas",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node seed.js"
+  },
   "dependencies": {
-    "mongodb": "^7.2.0"
+    "express": "^4.18.2",
+    "mongodb": "^6.3.0"
   }
 }
