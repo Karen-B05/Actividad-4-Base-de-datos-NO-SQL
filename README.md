@@ -109,9 +109,7 @@ moviestream-db/
 
 ## Captura de pantalla
 
-```md
-![App funcionando](./mongoDB_moviestream.png)
-```
+<img width="1910" height="898" alt="mongoDB_moviestream" src="https://github.com/user-attachments/assets/1557db8d-39c7-4428-a9d8-68bd615115b1" />
 
 ---
 
