@@ -105,6 +105,18 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
+// ── ACTORS ────────────────────────────────────────────────────
+
+// GET /api/actors
+app.get("/api/actors", async (req, res) => {
+  try {
+    const actors = await db.collection("actors").find().toArray();
+    res.json(actors);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ── INTERACTIONS ───────────────────────────────────────────────
 
 // GET /api/interactions?type=&userId=

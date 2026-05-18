@@ -15,6 +15,7 @@
   <nav id="nav">
     <button onclick="showPage('movies')" class="active" data-page="movies">Películas</button>
     <button onclick="showPage('interactions')" data-page="interactions">Interacciones</button>
+    <button onclick="showPage('actors')" data-page="actors">Actores</button>
   </nav>
   <div class="db-badge" id="db-badge">● conectando…</div>
 </header>
@@ -68,6 +69,7 @@ let intFilter     = '';
 let intUserFilter = '';
 let cachedMovies  = [];
 let cachedUsers   = [];
+let cachedActors  = [];
 
 // ── INIT ───────────────────────────────────────────────────────
 async function init() {
@@ -93,6 +95,7 @@ function showPage(page) {
     b.classList.toggle('active', b.dataset.page === page)
   );
   if (page === 'movies') renderMovies();
+  else if (page === 'actors') renderActors();
   else renderInteractions();
 }
 
@@ -257,6 +260,55 @@ async function saveMovie(id) {
     btn.disabled = false;
     btn.textContent = 'Reintentar';
   }
+}
+
+// ── ACTORS ─────────────────────────────────────────────────────
+async function renderActors() {
+  document.getElementById('main').innerHTML =
+    `<div class="empty"><div class="spinner"></div></div>`;
+
+  try {
+    const actors = await API.get('/actors');
+    cachedActors = actors;
+
+    document.getElementById('main').innerHTML = `
+      <div class="page-header">
+        <div class="page-title"><span>COLECCIÓN</span>Actores</div>
+      </div>
+
+      ${actors.length === 0
+        ? `<div class="empty">
+            <div class="empty-icon">🎭</div>
+            <p>No hay actores registrados</p>
+          </div>`
+        : `<div class="grid">
+            ${actors.map(actorCard).join('')}
+          </div>`
+      }`;
+  } catch (e) {
+    toast(e.message, true);
+  }
+}
+
+function actorCard(a) {
+  const famous = (a.famous_for || [])
+    .map(m => `<span class="tag genre">${m}</span>`)
+    .join('');
+
+  return `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">${a.name}</div>
+        <div class="card-year">${a.birth_year || '—'}</div>
+      </div>
+
+      <div class="tags">${famous}</div>
+
+      <div class="card-meta">
+        <div><strong>País:</strong> ${a.country || '—'}</div>
+        <div><strong>Oscars:</strong> ${a.oscars ?? 0}</div>
+      </div>
+    </div>`;
 }
 
 // ── INTERACTIONS ───────────────────────────────────────────────
